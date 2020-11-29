@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SystemZarządzaniaUlem
 {
-    public class Queen
+    class Queen : Bee
     {
-        public Queen(Worker[] workers)
+        public Queen(Worker[] workers, double weightMg)
+            : base(weightMg)
         {
             this.workers = workers;
         }
@@ -25,10 +26,14 @@ namespace SystemZarządzaniaUlem
         }
         public string WorkTheNextShift()
         {
+            double honeyConsumed = HoneyConsumptionRate(); //wartość miodu spożytego przez królową
+            
             shiftNumber++;
             string report = "Raport zmiany numer " + shiftNumber + "\r\n";
             for (int i = 0; i < workers.Length; i++)
             {
+                honeyConsumed += workers[i].HoneyConsumptionRate();
+
                 if (workers[i].DidYouFinish())
                 {
                     report += "Robotnica numer " + (i + 1) + " zakończyła swoje zadanie.\r\n";
@@ -49,7 +54,10 @@ namespace SystemZarządzaniaUlem
                         report += "Robotnica numer " + (i + 1) + " zakończy '" + workers[i].CurrentJob + "' po tej zmianie.\r\n";
                     }
                 }
+
+                
             }
+            report += "Całkowite spożycie miodu: " + honeyConsumed + " jednostek\r\n";
             return report;
         }
     }

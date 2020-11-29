@@ -7,9 +7,10 @@ using System.Windows.Forms.VisualStyles;
 
 namespace SystemZarządzaniaUlem
 {
-    public class Worker
+    class Worker : Bee
     {
-        public Worker(string[] jobs)
+        public Worker(string[] jobs, double weightMg)
+            :base(weightMg)
         {
             this.jobsICanDo = jobs; //bez this?
         }
@@ -71,6 +72,13 @@ namespace SystemZarządzaniaUlem
             {
                 return false;
             }
+        }
+        const double honeyUnitsPerShiftWorked = .65;
+        public override double HoneyConsumptionRate()
+        {
+            double consumption = base.HoneyConsumptionRate();
+            consumption += shiftsWorked * honeyUnitsPerShiftWorked;
+            return consumption;
         }
     }
 }
